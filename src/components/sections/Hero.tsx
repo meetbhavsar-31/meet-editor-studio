@@ -131,13 +131,18 @@ export default function Hero() {
               </button>
 
               <a
-                href={INSTAGRAM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-8 py-4 border border-white/20 text-ghost font-mono text-sm uppercase tracking-widest rounded-full hover:border-ember hover:text-ember transition-all duration-300 w-full sm:w-auto text-center"
-              >
-                Instagram
-              </a>
+  href="https://www.instagram.com/meet_editor31/"
+  target="_blank"
+  rel="noopener noreferrer"
+  onClick={(e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    window.open('https://www.instagram.com/meet_editor31/', '_blank')
+  }}
+  className="YOUR-EXISTING-CLASSES"
+>
+  Follow on Instagram
+</a>
             </motion.div>
           </div>
 

@@ -6,19 +6,29 @@ import { motion } from 'framer-motion'
 export default function About() {
   const ref = useRef<HTMLElement>(null)
   const [visible, setVisible] = useState(false)
-  const [imgLoaded, setImgLoaded] = useState(false)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); observer.disconnect() } },
+      ([e]) => {
+        if (e.isIntersecting) {
+          setVisible(true)
+          observer.disconnect()
+        }
+      },
       { threshold: 0.1 }
     )
+
     if (ref.current) observer.observe(ref.current)
+
     return () => observer.disconnect()
   }, [])
 
   return (
-    <section id="about" ref={ref as any} className="section-pad bg-obsidian relative overflow-hidden">
+    <section
+      id="about"
+      ref={ref as any}
+      className="section-pad bg-obsidian relative overflow-hidden"
+    >
       <div className="absolute top-0 right-0 w-96 h-96 bg-ember/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-gold/4 rounded-full blur-3xl pointer-events-none" />
 
@@ -32,7 +42,6 @@ export default function About() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="relative"
           >
-            {/* Big watermark number */}
             <div
               className="absolute -top-8 -left-4 font-display font-black text-white/[0.03] leading-none select-none pointer-events-none"
               style={{ fontSize: 'clamp(120px, 20vw, 240px)' }}
@@ -41,36 +50,36 @@ export default function About() {
             </div>
 
             <div className="relative glass rounded-2xl ember-border">
-              {/* Hero photo */}
-              <div className="relative w-full bg-graphite group overflow-hidden" style={{ aspectRatio: '4/3' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+
+              {/* PHOTO */}
+              <div
+                className="relative w-full bg-graphite group overflow-hidden"
+                style={{ aspectRatio: '4/3' }}
+              >
                 <img
-                  src="public/images/profile.png"
+                  src="/images/profile.png"
                   alt="Meet Bhavsar — Video Editor"
-                  className={`w-full h-full object-cover object-top transition-all duration-700 group-hover:scale-110 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
-                  onLoad={() => setImgLoaded(true)}
-                  onError={() => setImgLoaded(true)}
+                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
                 />
-                {!imgLoaded && (
-                  <div className="absolute inset-0 bg-gradient-to-br from-ember/20 via-graphite to-void flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-4xl mb-2">📹</div>
-                      <p className="font-mono text-xs text-ash">Loading...</p>
-                    </div>
-                  </div>
-                )}
-                {/* Photo overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-graphite via-transparent to-transparent opacity-80" />
-                {/* Name tag on photo */}
+
+                {/* Lighter cinematic overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+
+                {/* Name tag */}
                 <div className="absolute bottom-4 left-5 right-5">
-                  <div className="font-mono text-[10px] text-ember uppercase tracking-[0.25em] mb-1">— Since 2020</div>
+                  <div className="font-mono text-[10px] text-ember uppercase tracking-[0.25em] mb-1">
+                    — Since 2020
+                  </div>
+
                   <blockquote className="font-display text-lg sm:text-xl text-pure leading-snug italic">
-                    "Every frame is a choice.<br />Every cut is a statement."
+                    Every frame is a choice.
+                    <br />
+                    Every cut is a statement.
                   </blockquote>
                 </div>
               </div>
 
-              {/* Stats grid below photo */}
+              {/* Stats */}
               <div className="overflow-hidden grid grid-cols-2 sm:grid-cols-4 divide-x divide-white/8 border-t border-white/8">
                 {[
                   { n: '2+', label: 'Years' },
@@ -78,15 +87,27 @@ export default function About() {
                   { n: '2.5M+', label: 'Views' },
                   { n: '2024', label: 'Studio Founded' },
                 ].map((s, i) => (
-                  <div key={s.label} className={`p-5 text-center ${i >= 2 ? 'border-t border-white/8 sm:border-t-0' : ''}`}>
-                    <div className="font-display font-black text-2xl ember-text">{s.n}</div>
-                    <div className="font-mono text-[10px] text-ash uppercase tracking-wider mt-1">{s.label}</div>
+                  <div
+                    key={s.label}
+                    className={`p-5 text-center ${
+                      i >= 2 ? 'border-t border-white/8 sm:border-t-0' : ''
+                    }`}
+                  >
+                    <div className="font-display font-black text-2xl ember-text">
+                      {s.n}
+                    </div>
+
+                    <div className="font-mono text-[10px] text-ash uppercase tracking-wider mt-1">
+                      {s.label}
+                    </div>
                   </div>
                 ))}
               </div>
+
             </div>
           </motion.div>
 
+          {/* KEEP EVERYTHING BELOW THIS EXACTLY AS YOU ALREADY HAVE IT */}
           {/* RIGHT: Text */}
           <motion.div
             initial={{ opacity: 0, x: 60 }}

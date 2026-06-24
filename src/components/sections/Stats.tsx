@@ -10,29 +10,40 @@ const stats = [
   { value: 4, suffix: '', label: 'Core Services', desc: 'End-to-end production' },
 ]
 
-function Counter({ value, suffix, visible }: { value: number; suffix: string; visible: boolean }) {
+function Counter({
+  value,
+  suffix,
+  visible,
+}: {
+  value: number
+  suffix: string
+  visible: boolean
+}) {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
     if (!visible) return
-    let start = 0
-    const duration = 2000
-    const step = Math.ceil(value / (duration / 16))
-    const timer = setInterval(() => {
-      start += step
-      if (start >= value) {
-        setCount(value)
-        clearInterval(timer)
-      } else {
-        setCount(start)
+
+    let startTime = 0
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp
+
+      const progress = Math.min((timestamp - startTime) / 2000, 1)
+
+      setCount(value * progress)
+
+      if (progress < 1) {
+        requestAnimationFrame(animate)
       }
-    }, 16)
-    return () => clearInterval(timer)
+    }
+
+    requestAnimationFrame(animate)
   }, [visible, value])
 
   return (
     <span>
-      {count}
+      {value % 1 !== 0 ? count.toFixed(1) : Math.floor(count)}
       {suffix}
     </span>
   )
