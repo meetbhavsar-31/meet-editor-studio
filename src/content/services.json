@@ -1,0 +1,70 @@
+{
+  "intro": "Everything from the first cut to the final thumbnail.",
+  "items": [
+    {
+      "title": "YouTube editing",
+      "text": "Long-form edits with sharp pacing, music sync and storytelling built for retention.",
+      "tags": [
+        "Long form",
+        "Retention"
+      ]
+    },
+    {
+      "title": "Reels editing",
+      "text": "Punchy short-form with transitions, captions and effects made to stop the scroll.",
+      "tags": [
+        "Reels",
+        "Shorts"
+      ]
+    },
+    {
+      "title": "Color grading",
+      "text": "Cinematic tones, mood and skin-tone correction for flat footage.",
+      "tags": [
+        "LUTs",
+        "Mood"
+      ]
+    },
+    {
+      "title": "Motion graphics",
+      "text": "Animated titles, lower thirds and intros that carry your brand.",
+      "tags": [
+        "After Effects"
+      ]
+    },
+    {
+      "title": "Thumbnail design",
+      "text": "Click-worthy YouTube thumbnails and reel covers designed to lift click-through rate.",
+      "tags": [
+        "CTR",
+        "Photoshop"
+      ]
+    },
+    {
+      "title": "Post design",
+      "text": "Instagram posts, carousels and promo creatives that match your brand.",
+      "tags": [
+        "Social",
+        "Branding"
+      ]
+    }
+  ],
+  "process": [
+    {
+      "title": "Brief",
+      "text": "Message me your idea, references and deadline."
+    },
+    {
+      "title": "Quote",
+      "text": "I send price and timeline. Work starts once you confirm."
+    },
+    {
+      "title": "Draft",
+      "text": "You review the first cut and request revisions."
+    },
+    {
+      "title": "Delivery",
+      "text": "You get the final files once payment terms are met."
+    }
+  ]
+}

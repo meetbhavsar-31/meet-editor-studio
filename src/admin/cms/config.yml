@@ -1,0 +1,195 @@
+# Edit the site from /admin/cms/  (login with GitHub; only people with write access to the repo can save)
+backend:
+  name: github
+  repo: YOUR-GITHUB-USERNAME/YOUR-REPO-NAME     # <-- CHANGE THIS (example: meetbhavsar/meet-editor-studio)
+  branch: main                                  # <-- change if your branch is called something else
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+local_backend: true
+publish_mode: simple
+media_folder: src/media/uploads
+public_folder: /media/uploads
+site_url: https://meet-editor-studio.netlify.app
+locale: en
+collections:
+  - name: videos
+    label: "🎬 Videos & Reels (YouTube)"
+    files:
+      - name: youtube
+        label: YouTube videos and reels
+        file: src/content/youtube.json
+        fields:
+          - name: reels
+            label: Reels / Shorts (vertical)
+            widget: list
+            required: false
+            summary: "{{fields.title}} {{fields.link}}"
+            fields:
+              - {name: link, label: "YouTube link (paste the whole link)", widget: string}
+              - {name: title, label: "Title (leave empty to use the YouTube title)", widget: string, required: false}
+              - {name: tags, label: Tags, widget: list, required: false, field: {name: tag, label: Tag, widget: string}}
+          - name: long
+            label: Long videos (landscape)
+            widget: list
+            required: false
+            summary: "{{fields.title}} {{fields.link}}"
+            fields:
+              - {name: link, label: "YouTube link (paste the whole link)", widget: string}
+              - {name: title, label: "Title (leave empty to use the YouTube title)", widget: string, required: false}
+              - {name: tags, label: Tags, widget: list, required: false, field: {name: tag, label: Tag, widget: string}}
+  - name: thumbnails
+    label: "🖼 Thumbnails (YouTube)"
+    files:
+      - name: thumbnails
+        label: 🖼 Thumbnails (YouTube)
+        file: src/content/thumbnails.json
+        fields:
+          - name: items
+            label: Items (drag to reorder)
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - {name: image, label: Image, widget: image, media_folder: "/src/media/thumbnails", public_folder: "/media/thumbnails"}
+              - {name: title, label: Title, widget: string}
+              - {name: client, label: Client or note, widget: string, required: false}
+              - {name: tags, label: "Tags (e.g. gaming, vlog, wedding)", widget: list, required: false, field: {name: tag, label: Tag, widget: string}}
+  - name: reel-covers
+    label: "📱 Reel covers"
+    files:
+      - name: reel-covers
+        label: 📱 Reel covers
+        file: src/content/reel-covers.json
+        fields:
+          - name: items
+            label: Items (drag to reorder)
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - {name: image, label: Image, widget: image, media_folder: "/src/media/reel-covers", public_folder: "/media/reel-covers"}
+              - {name: title, label: Title, widget: string}
+              - {name: client, label: Client or note, widget: string, required: false}
+              - {name: tags, label: "Tags (e.g. gaming, vlog, wedding)", widget: list, required: false, field: {name: tag, label: Tag, widget: string}}
+  - name: posts
+    label: "🧩 Posts (any size)"
+    files:
+      - name: posts
+        label: 🧩 Posts (any size)
+        file: src/content/posts.json
+        fields:
+          - name: items
+            label: Items (drag to reorder)
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - {name: image, label: Image, widget: image, media_folder: "/src/media/posts", public_folder: "/media/posts"}
+              - {name: title, label: Title, widget: string}
+              - {name: client, label: Client or note, widget: string, required: false}
+              - {name: tags, label: "Tags (e.g. gaming, vlog, wedding)", widget: list, required: false, field: {name: tag, label: Tag, widget: string}}
+  - name: trust
+    label: "⭐ Reviews, clients & social"
+    files:
+      - name: testimonials
+        label: Testimonials (slider)
+        file: src/content/testimonials.json
+        fields:
+          - name: items
+            label: Video editing reviews
+            widget: list
+            summary: "{{fields.name}}"
+            fields:
+              - {name: quote, label: What they said, widget: text}
+              - {name: name, label: Name, widget: string}
+              - {name: role, label: Role / place, widget: string, required: false}
+          - name: design
+            label: Graphic design reviews (thumbnails and covers)
+            widget: list
+            required: false
+            summary: "{{fields.name}}"
+            fields:
+              - {name: quote, label: What they said, widget: text}
+              - {name: name, label: Name, widget: string}
+              - {name: role, label: Role / place, widget: string, required: false}
+      - name: clients
+        label: Client logos (strip)
+        file: src/content/clients.json
+        fields:
+          - name: items
+            label: Clients
+            widget: list
+            summary: "{{fields.name}}"
+            fields:
+              - {name: name, label: Client name, widget: string}
+              - {name: logo, label: Logo, widget: image, media_folder: "/src/media/clients", public_folder: "/media/clients"}
+              - {name: url, label: Link (optional), widget: string, required: false}
+      - name: social
+        label: Instagram posts to show on the home page
+        file: src/content/social.json
+        fields:
+          - {name: instagramPosts, label: "Instagram post/reel links (https://www.instagram.com/reel/XXXX/)", widget: list, required: false, field: {name: url, label: Link, widget: string}}
+  - name: pages
+    label: "✏️ Page text"
+    files:
+      - name: home
+        label: Home page
+        file: src/content/home.json
+        fields:
+          - {name: pill, label: Small badge text, widget: string}
+          - {name: line1, label: "Big name, first line", widget: string}
+          - {name: line2, label: "Big name, second line (colored)", widget: string}
+          - {name: lead, label: Intro sentence, widget: text}
+          - name: spec
+            label: Four facts under the intro
+            widget: list
+            fields: [{name: label, label: Label, widget: string}, {name: value, label: Value, widget: string}]
+      - name: services
+        label: Services page
+        file: src/content/services.json
+        fields:
+          - {name: intro, label: Intro sentence, widget: string}
+          - name: items
+            label: Services
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - {name: title, label: Title, widget: string}
+              - {name: text, label: Description, widget: text}
+              - {name: tags, label: Tags, widget: list, required: false, field: {name: tag, label: Tag, widget: string}}
+          - name: process
+            label: Process steps
+            widget: list
+            summary: "{{fields.title}}"
+            fields: [{name: title, label: Step, widget: string}, {name: text, label: Description, widget: text}]
+      - name: about
+        label: About page
+        file: src/content/about.json
+        fields:
+          - {name: paragraphs, label: "Paragraphs (links: [text](https://...))", widget: list, field: {name: text, label: Paragraph, widget: text}}
+          - {name: tools, label: Tools, widget: list, field: {name: tool, label: Tool, widget: string}}
+          - name: timeline
+            label: Timeline
+            widget: list
+            summary: "{{fields.year}}"
+            fields: [{name: year, label: Year, widget: string}, {name: text, label: What happened, widget: string}]
+      - name: legal
+        label: Terms & Privacy (blanks and date)
+        file: src/content/legal.json
+        fields:
+          - {name: updated, label: Last updated (text), widget: string}
+          - {name: advance, label: Advance payment (example 50%), widget: string, required: false}
+          - {name: revisions, label: Number of revision rounds (example 2), widget: string, required: false}
+  - name: settings
+    label: "⚙️ Contact & site settings"
+    files:
+      - name: site
+        label: Contact, links and names
+        file: src/site.json
+        fields:
+          - {name: url, label: Website address (no slash at end), widget: string}
+          - {name: name, label: Studio name, widget: string}
+          - {name: owner, label: Your name, widget: string}
+          - {name: email, label: Email, widget: string}
+          - {name: instagram, label: Instagram link, widget: string}
+          - {name: handle, label: Instagram handle (@name), widget: string}
+          - {name: youtube, label: YouTube channel link (optional), widget: string, required: false}
+          - {name: youtubeChannelId, label: "YouTube channel ID starting with UC (optional, shows latest public videos)", widget: string, required: false}
+          - {name: city, label: City, widget: string}

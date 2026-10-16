@@ -1,0 +1,39 @@
+{
+  "paragraphs": [
+    "I started editing in 2020 as a hobby, began freelancing in 2021, and turned professional in 2024, with my first real client work coming in 2025–26. My focus is YouTube content, reels, cinematic storytelling and motion graphics.",
+    "I collaborate with [Dhruv Thakkar](https://www.youtube.com/@dhruvthakkar2604), a well-known Vadodara YouTuber, editing key segments and recreating archived content with clean cuts and creative visuals."
+  ],
+  
+  "tools": [
+    "Premiere Pro",
+    "After Effects",
+    "DaVinci Resolve",
+    "Photoshop"
+  ],
+  "timeline": [
+    {
+      "year": "2020",
+      "text": "Started editing as a hobby."
+    },
+    {
+      "year": "2021",
+      "text": "Began small freelance projects in grading, transitions and pacing."
+    },
+    {
+      "year": "2022",
+      "text": "Deep-dived into After Effects and motion graphics."
+    },
+    {
+      "year": "2024",
+      "text": "Went professional: YouTube, reels and motion work."
+    },
+    {
+      "year": "2025",
+      "text": "First real client work."
+    },
+    {
+      "year": "2026",
+      "text": "Collaboration with Dhruv Thakkar. Launched Meet Editor Studio."
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "_help": "Paste YouTube links under reels (Shorts / vertical) or long (landscape). Only 'link' is required. 'title' and 'tags' are optional; titles are fetched from YouTube automatically.",
+  "reels": [
+    {
+      "link": "https://www.youtube.com/shorts/3wiYSCtsIUo",
+      "title": "Cinematic Reel",
+      "tags": ["cinematic", "reels"]
+    },
+    {
+      "link": "https://www.youtube.com/shorts/ZMJQd18Nl08",
+      "title": "About Food",
+      "tags": ["food", "reels"]
+    },
+    {
+      "link": "https://www.youtube.com/shorts/AidMyjvZDNU",
+      "title": "Cinematic Reel",
+      "tags": ["cinematic", "reels"]
+    }
+  ],
+  "long": [
+    {
+      "link": "https://www.youtube.com/watch?v=rehBk2jh_O8&list=PLVsm-0JNtUMYX7PXBU5sz5P3WzvVSJ8ID&index=6",
+      "title": "My Vlog Edit",
+      "tags": ["vlog", "comedy"]
+    },
+    {
+      "link": "https://www.youtube.com/watch?v=MZ0imzxkNDA&list=PLVsm-0JNtUMYX7PXBU5sz5P3WzvVSJ8ID&index=7",
+      "title": "Students Were CHEATING... I Caught Them!",
+      "tags": ["comedy"]
+    },
+    {
+      "link": "https://www.youtube.com/watch?v=moJJxkZJZ-o&list=PLVsm-0JNtUMYX7PXBU5sz5P3WzvVSJ8ID&index=8",
+      "title": "Re-Edited Video",
+      "tags": ["re-edit", "comedy"]
+    },
+    {
+      "link": "https://www.youtube.com/watch?v=347KC-myLFI&list=PLVsm-0JNtUMYX7PXBU5sz5P3WzvVSJ8ID&index=9",
+      "title": "Sneaking Inside Famous YouTuber's Video!",
+      "tags": ["sneaking", "comedy"]
+    },
+    {
+      "link": "https://www.youtube.com/watch?v=iAZneS8Aelg&list=PLVsm-0JNtUMYX7PXBU5sz5P3WzvVSJ8ID&index=10",
+      "title": "Wedding Highlights",
+      "tags": ["wedding", "comedy"]
+    }
+  ]
+}

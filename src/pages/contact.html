@@ -1,0 +1,18 @@
+<!--
+title: Contact & Hire {{owner}} | {{name}}
+description: Contact {{owner}} for video editing, reels, thumbnails and post design. Message on Instagram or email.
+-->
+<section id="contact"><div class="w ct">
+<div><h1 class="ph">Let's talk</h1><p class="sub">Tell me about your project. I usually reply within a day.</p>
+<a class="ln" href="{{instagram}}" target="_blank" rel="noopener noreferrer"><small>Instagram</small><b>{{handle}}</b></a>
+<a class="ln" href="mailto:{{email}}"><small>Email</small><b>{{email}}</b></a>
+<button class="btn o" id="cp" type="button" data-copy="{{email}}">Copy email</button></div>
+<form id="cf" data-mail="{{email}}" novalidate>
+<input id="n" placeholder="Your name" autocomplete="name" aria-label="Your name">
+<input id="e" type="email" placeholder="Your email" autocomplete="email" aria-label="Your email">
+<select id="s" aria-label="Service"><option>Video Editing</option><option>Reels</option><option>Thumbnail Design</option><option>Post Design</option><option>Color Grading</option><option>Motion Graphics</option><option>Other</option></select>
+<textarea id="m" rows="5" placeholder="Project details, deadline and budget" aria-label="Message"></textarea>
+<label class="k"><input type="checkbox" id="a"><span>I agree to the <a class="ac" href="#terms" data-m="terms">Terms &amp; Conditions</a> and <a class="ac" href="#privacy" data-m="privacy">Privacy Policy</a>.</span></label>
+<div class="er" id="er" role="alert"></div>
+<button class="btn" type="submit">Send by email</button>
+</form></div></section>
