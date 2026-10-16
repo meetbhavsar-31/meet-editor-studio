@@ -1,8 +1,8 @@
 # Edit the site from /admin/cms/  (login with GitHub; only people with write access to the repo can save)
 backend:
   name: github
-  repo: YOUR-GITHUB-USERNAME/YOUR-REPO-NAME     # <-- CHANGE THIS (example: meetbhavsar/meet-editor-studio)
-  branch: main                                  # <-- change if your branch is called something else
+  repo: meetbhavsar-31/meet-editor-studio
+  branch: main                               # <-- change if your branch is called something else
   base_url: https://api.netlify.com
   auth_endpoint: auth
 local_backend: true
