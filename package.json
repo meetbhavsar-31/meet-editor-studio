@@ -1,1 +1,13 @@
-{"name":"meet-editor-studio","version":"4.0.0","private":true,"scripts":{"build":"node build.js","watch":"node build.js --watch","dev":"node build.js && npx netlify dev"},"dependencies":{"@netlify/blobs":"^11.1.4"}}
+{
+  "name": "meet-editor-studio",
+  "version": "4.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node build.js",
+    "watch": "node build.js --watch",
+    "dev": "node build.js && npx netlify dev"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^11.1.4"
+  }
+}

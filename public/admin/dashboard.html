@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Dashboard</title>
+<style>
+:root{--bg:#050505;--sf:#0e0e0f;--tx:#f4f1ec;--mu:#8d8a85;--ac:#ff5a3c;--ln:#222224}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,sans-serif;padding:20px}main{max-width:1000px;margin:auto}
+h1{font-size:28px;margin:0 0 4px}h2{font-size:17px;margin:0 0 10px}.mu{color:var(--mu)}a{color:var(--ac)}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:18px;margin:14px 0}
+.kp{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.kp div{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:16px}.kp b{display:block;font-size:28px}.kp small{color:var(--mu)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.kp{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse}td{padding:6px 0;border-bottom:1px solid var(--ln);vertical-align:top}td:last-child{text-align:right;color:var(--mu);white-space:nowrap;padding-left:10px}
+.bars{display:flex;align-items:flex-end;gap:3px;height:120px}.bars i{flex:1;background:var(--ac);min-height:2px;border-radius:3px 3px 0 0;opacity:.85}
+input,button{font:inherit;padding:10px 14px;border-radius:10px;border:1px solid var(--ln);background:var(--sf);color:var(--tx)}button{cursor:pointer}button.p{background:var(--ac);border-color:var(--ac);color:#050505;font-weight:600}
+.cm{border-top:1px solid var(--ln);padding:10px 0}.cm p{margin:4px 0}.cm button{margin-right:6px;padding:6px 12px}.err{color:var(--ac)}[hidden]{display:none!important}
+</style></head><body><main>
+<h1>Dashboard</h1><p class="mu">Private numbers about your site. No cookies, no IP addresses, no personal data. <a href="/admin/">← Admin home</a></p>
+<div class="card" id="login"><h2>Sign in</h2><p class="mu">Enter the ADMIN_TOKEN you set in Netlify.</p>
+<form id="lf"><input id="tk" type="password" placeholder="Admin token" autocomplete="current-password" style="width:min(100%,360px)"> <button class="p" type="submit">Open dashboard</button>
+<p><label class="mu"><input id="rm" type="checkbox"> Remember on this device</label></p><p class="err" id="er"></p></form></div>
+<div id="dash" hidden>
+<div class="kp"><div><b id="k1">0</b><small>Page views (30 days)</small></div><div><b id="k2">0</b><small>Visits (30 days)</small></div><div><b id="k3">0</b><small>Likes in total</small></div><div><b id="k4">0</b><small>Comments waiting</small></div></div>
+<div class="card"><h2>Page views per day (last 30 days)</h2><div class="bars" id="bars"></div></div>
+<div class="g2"><div class="card"><h2>Popular pages</h2><table id="t-pv"></table></div><div class="card"><h2>Most liked works</h2><table id="t-lk"></table></div>
+<div class="card"><h2>Where visitors come from</h2><table id="t-ref"></table></div><div class="card"><h2>Devices</h2><table id="t-dev"></table><h2 style="margin-top:16px">Countries</h2><table id="t-cty"></table></div>
+<div class="card"><h2>Actions</h2><table id="t-ev"></table></div></div>
+<div class="card"><h2>Comments waiting for you</h2><div id="pend"></div></div>
+<div class="card"><h2>Recently approved</h2><div id="rec"></div></div>
+<p><button id="out">Sign out</button></p></div></main>
+<script>
+var tok='',$=function(i){return document.getElementById(i)};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function api(p,o){o=o||{};o.headers=Object.assign({Authorization:'Bearer '+tok,'Content-Type':'application/json'},o.headers||{});return fetch(p,o).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||'Error');return j})})}
+function table(id,obj,n){var a=Object.entries(obj||{}).sort(function(x,y){return y[1]-x[1]}).slice(0,n||8);$(id).innerHTML=a.length?a.map(function(x){return'<tr><td>'+esc(x[0])+'</td><td>'+x[1]+'</td></tr>'}).join(''):'<tr><td class="mu">No data yet</td><td></td></tr>'}
+function cms(list,id,pending){$(id).innerHTML=list.length?list.map(function(c){return'<div class="cm"><b>'+esc(c.name||'Visitor')+'</b> <span class="mu">on '+esc(c.lid)+' · '+new Date(c.ts).toLocaleString()+'</span><p>'+esc(c.text)+'</p>'+(pending?'<button class="p" data-a="approve" data-l="'+esc(c.lid)+'" data-c="'+esc(c.cid)+'">Approve</button>':'')+'<button data-a="delete" data-l="'+esc(c.lid)+'" data-c="'+esc(c.cid)+'">Delete</button></div>'}).join(''):'<p class="mu">Nothing here.</p>'}
+function load(){
+  Promise.all([api('/api/admin/stats?days=30'),api('/api/admin/comments'),fetch('/works.json').then(function(r){return r.json()}).catch(function(){return[]})]).then(function(r){
+    var s=r[0],c=r[1],w={};r[2].forEach(function(x){w[x.lid]=x.title});
+    $('login').hidden=true;$('dash').hidden=false;try{localStorage.setItem('noTrack','1')}catch(e){}
+    $('k1').textContent=s.pvt;$('k2').textContent=s.visits;$('k3').textContent=s.likes.total;$('k4').textContent=c.pending.length;
+    var m=Math.max.apply(null,s.days.map(function(d){return d.pv}).concat(1));$('bars').innerHTML=s.days.map(function(d){return'<i title="'+d.d+': '+d.pv+'" style="height:'+Math.max(2,d.pv/m*100)+'%"></i>'}).join('');
+    table('t-pv',s.pv);table('t-ref',s.ref);table('t-dev',s.dev);table('t-cty',s.cty);table('t-ev',s.ev);
+    $('t-lk').innerHTML=s.likes.top.length?s.likes.top.map(function(x){return'<tr><td>'+esc(w[x.id]||x.id)+'</td><td>♥ '+x.n+'</td></tr>'}).join(''):'<tr><td class="mu">No likes yet</td><td></td></tr>';
+    cms(c.pending,'pend',true);cms(c.recent,'rec',false);
+  }).catch(function(e){$('er').textContent=e.message;$('login').hidden=false;$('dash').hidden=true;sessionStorage.removeItem('adm');localStorage.removeItem('adm')});
+}
+$('lf').onsubmit=function(e){e.preventDefault();tok=$('tk').value.trim();if(!tok)return;(($('rm').checked?localStorage:sessionStorage)).setItem('adm',tok);$('er').textContent='';load()};
+document.addEventListener('click',function(e){var b=e.target.closest('[data-a]');if(!b)return;b.disabled=true;api('/api/admin/comments',{method:'POST',body:JSON.stringify({action:b.dataset.a,lid:b.dataset.l,cid:b.dataset.c})}).then(load).catch(function(x){alert(x.message);b.disabled=false})});
+$('out').onclick=function(){sessionStorage.removeItem('adm');localStorage.removeItem('adm');location.reload()};
+tok=sessionStorage.getItem('adm')||localStorage.getItem('adm')||'';if(tok)load();
+</script></body></html>
