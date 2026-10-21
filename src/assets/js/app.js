@@ -51,7 +51,7 @@
   /* ---------- galleries: search, tags, sort, "Show more", masonry ---------- */
   function cols() { return innerWidth < 560 ? 2 : innerWidth < 900 ? 3 : 4; }
   function layoutM(g, force) {
-    var n = cols(); if (!force && g._n === n) return; g._n = n;
+    var n = g.dataset.cols ? Math.min(+g.dataset.cols, cols()) : cols(); if (!force && g._n === n) return; g._n = n;
     var cards = $$('.cd', g).sort(ord); g.classList.add('on'); g.innerHTML = '';
     var cs = [], hs = []; for (var i = 0; i < n; i++) { var c = document.createElement('div'); c.className = 'mc'; g.appendChild(c); cs.push(c); hs.push(0); }
     cards.forEach(function (c) { if (c.hidden || c.classList.contains('mo')) { cs[0].appendChild(c); return; } var k = hs.indexOf(Math.min.apply(null, hs)); cs[k].appendChild(c); hs[k] += (parseFloat(c.dataset.ar) || 1.25) + 0.3; });
@@ -186,8 +186,11 @@
     var box = $('#tw'); if (!box) return;
     fetch('works.json').then(function (r) { return r.json(); }).then(function (w) {
       var a = w.filter(function (x) { return counts[x.lid] > 0; }).sort(function (x, y) { return counts[y.lid] - counts[x.lid]; }).slice(0, 6); if (!a.length) return;
-      box.innerHTML = a.map(function (x) { return '<a class="cd tc" href="' + x.page + '#' + encodeURIComponent(x.id) + '"><div class="th"><img loading="lazy" src="' + x.img + '" alt="' + esc(x.title) + '"></div><div class="cb"><div class="ci"><b>' + esc(x.title) + '</b><small>' + esc(x.kind) + '</small></div><span class="lk" aria-pressed="true">' + HEART + '<span class="n">' + fmt(counts[x.lid]) + '</span></span></div></a>'; }).join('');
-      $('#topw').hidden = false; $$('.cd', box).forEach(function (c) { c.classList.add('rv', 'in'); });
+      box.innerHTML = a.map(function (x, i) {
+        var ar = x.ar || 0.75;
+        return '<a class="cd tc" data-i="' + i + '" data-lid="' + esc(x.lid) + '" data-ar="' + ar + '" href="' + x.page + '#' + encodeURIComponent(x.id) + '"><div class="th" style="aspect-ratio:' + (1 / ar).toFixed(4) + '"><img loading="lazy" src="' + x.img + '" alt="' + esc(x.title) + '">' + (x.play ? '<span class="pl">▶</span>' : '') + '</div><div class="cb"><div class="ci"><b>' + esc(x.title) + '</b><small>' + esc(x.kind) + '</small></div><span class="lk" aria-pressed="true">' + HEART + '<span class="n">' + fmt(counts[x.lid]) + '</span></span></div></a>';
+      }).join('');
+      $('#topw').hidden = false; layoutM(box, true); $$('.cd', box).forEach(function (c) { c.classList.add('rv', 'in'); });
     }).catch(function () {});
   }
   fetch(API).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {

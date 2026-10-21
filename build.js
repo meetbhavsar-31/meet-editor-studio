@@ -75,7 +75,7 @@ async function build() {
     .replace(/\{\{legal:(\w+)\}\}/g, (m, k) => legal[k] ? esc(legal[k]) : '<mark>[add ' + (k === 'advance' ? 'advance %' : k === 'revisions' ? 'number' : k) + ']</mark>')
     .replace(/\{\{data:([\w.]+)\}\}/g, (m, p) => { const [f, ...k] = p.split('.'); let v = D[f]; k.forEach(x => { v = v && v[x]; }); return esc(v); });
   const partial = n => fill(rd('partials/' + n + '.html'));
-  const nice = f => f.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  const nice = f => f.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').replace(/(^|\s)(\w)/g, (m, s, c) => s + c.toUpperCase());
   const slug = f => f.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   // works in a folder: items from src/content/<folder>.json (admin) first, then any other image dropped in src/media/<folder>/
   const works = dir => {
@@ -102,7 +102,7 @@ async function build() {
     const images = (d, mode) => {
       const it = works(d); stats.push(d + ':' + it.length); if (!it.length) return empty;
       image = site.url + '/' + it[0].file; const k = LABEL[d] || 'design', masonry = mode === 'masonry', reel = d === 'reel-covers';
-      it.forEach(x => all.push({ lid: d + ':' + x.id, id: x.id, title: x.title, kind: KIND[d] || 'Design', page: file, img: x.file }));
+      it.forEach(x => all.push({ lid: d + ':' + x.id, id: x.id, title: x.title, kind: KIND[d] || 'Design', page: file, img: x.file, ar: x.w ? +(x.h / x.w).toFixed(4) : 0.75 }));
       return tools(it) + '<div class="' + (masonry ? 'msn' : 'gr ' + (reel ? 'g4' : 'g3')) + '" data-gal ' + (masonry ? 'data-masonry ' : '') + 'data-per="' + PER + '">' + it.map(x => card({
         id: x.id, lid: d + ':' + x.id, title: x.title, sub: x.client, tags: x.tags, label: 'View ' + x.title, cls: reel ? 'v' : '',
         attrs: ' data-full="' + x.file + '"' + (x.w ? ' data-ar="' + (x.h / x.w).toFixed(4) + '"' : ''),
@@ -114,7 +114,7 @@ async function build() {
       videos: () => {
         const v = VIDS; stats.push('youtube:' + v.length); if (!v.length) return empty;
         const L = v.filter(x => x.type === 'long'), R = v.filter(x => x.type !== 'long');
-        v.forEach(x => all.push({ lid: 'video:' + x.id, id: x.id, title: x.title || 'Video', kind: x.type === 'long' ? 'Video' : 'Reel', page: file, img: 'https://i.ytimg.com/vi/' + x.id + '/hqdefault.jpg' }));
+        v.forEach(x => all.push({ lid: 'video:' + x.id, id: x.id, title: x.title || 'Video', kind: x.type === 'long' ? 'Video' : 'Reel', page: file, img: 'https://i.ytimg.com/vi/' + x.id + '/hqdefault.jpg', ar: x.type === 'long' ? 0.5625 : 1.7778, play: 1 }));
         const vc = (x, sh) => { const t = x.title || 'Video'; return card({ id: x.id, lid: 'video:' + x.id, title: t, sub: sh ? 'Reel' : 'Long video', tags: x.tags, cls: sh ? 'v' : '', label: 'Play ' + t, attrs: ' data-yt="' + esc(x.id) + '" data-k="' + (sh ? 'short' : 'long') + '"', img: '<img loading="lazy" src="https://i.ytimg.com/vi/' + esc(x.id) + '/hqdefault.jpg" alt="' + esc(t + ' — video edited by ' + site.owner) + '">', play: '<span class="pl">▶</span>' }); };
         const grp = (k, h, a, c) => a.length ? '<div class="grp" data-group="' + k + '"><h2 class="gh">' + h + '<span>' + a.length + '</span></h2><div class="gr ' + c + '" data-gal data-per="' + PER + '">' + a.map(x => vc(x, k === 'short')).join('') + '</div></div>' : '';
         return tools(v) + (L.length && R.length ? '<div class="fl" role="group" aria-label="Filter videos"><button class="f on" data-f="all" aria-pressed="true">All</button><button class="f" data-f="short" aria-pressed="false">Reels</button><button class="f" data-f="long" aria-pressed="false">Long videos</button></div>' : '') + grp('long', 'Long videos', L, 'g3') + grp('short', 'Reels', R, 'g4');
@@ -150,7 +150,7 @@ async function build() {
           (yt.length ? '<div class="gr g3 tcs">' + yt.map(v => '<a class="cd tc" href="https://www.youtube.com/watch?v=' + esc(v.id) + '"><div class="th"><img loading="lazy" src="https://i.ytimg.com/vi/' + esc(v.id) + '/hqdefault.jpg" alt="' + esc(v.title) + '"><span class="pl">▶</span></div><div class="cb"><div class="ci"><b>' + esc(v.title) + '</b><small>Latest on YouTube</small></div></div></a>').join('') + '</div>' : '') +
           (ig.length ? '<div class="gr g3 igs">' + ig.map(u => '<button class="igp" type="button" data-ig="' + esc(u.replace(/\/?$/, '/') + 'embed') + '"><b>Instagram</b><span>Tap to load this post</span></button>').join('') + '</div>' : '') + '</div></section>';
       },
-      top: () => '<section id="topw" hidden><div class="w"><h2>Top works</h2><p class="sub">Most loved by visitors · <b data-total>0</b> likes so far</p><div class="gr g3" id="tw"></div></div></section>'
+      top: () => '<section id="topw" hidden><div class="w"><h2>Top works</h2><p class="sub">Most loved by visitors · <b data-total>0</b> likes so far</p><div class="msn" id="tw" data-masonry></div></div></section>'
     };
     body = body.replace(/\{\{gallery:([\w-]+)\}\}/g, (m, d) => images(d, 'grid')).replace(/\{\{masonry:([\w-]+)\}\}/g, (m, d) => images(d, 'masonry')).replace(/\{\{(\w+)\}\}/g, (m, k) => M[k] ? M[k]() : m);
     const canon = site.url + (sl === 'index' ? '/' : '/' + sl);
